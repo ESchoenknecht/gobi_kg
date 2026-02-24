@@ -148,7 +148,7 @@ def run_full_pipeline(
     min_cells = 3,
 ):
     """
-    Decision between Wilcoxon (<2 samples per condition) 
+    Decision between Wilcoxon (<3 samples per condition) 
     or preprocessing & edgeR
 
     """
@@ -165,8 +165,8 @@ def run_full_pipeline(
 
     min_reps = sample_counts.min()
 
-    if min_reps < 2:
-        print("INFO: Min Samples < 2, start Wilcoxon")
+    if min_reps < 3:
+        print("INFO: Min Samples < 3, start Wilcoxon")
 
         run_wilcoxon(
             adata_path=adata_filepath,
@@ -189,7 +189,7 @@ def run_full_pipeline(
         return
 
     else:
-        print("INFO: Min Samples >= 2")
+        print("INFO: Min Samples > 2")
 
         print("INFO: start preprocessing")
         run_preprocessing(
