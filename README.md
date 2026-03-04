@@ -38,7 +38,7 @@ region – Tissue/region identifier (default Unknown)
 
 threshold – threshold for highly expressed genes (default 0.0125)
 
-cell_type_col – Column defining cell types (required)
+cell_type_col – Column defining cell types (if not present in the data, the column will be created)
 
 cellstates_excluded – Cell states to exclude (Default: empty list)
 
