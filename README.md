@@ -1,28 +1,28 @@
 This code creates a canonical DE table which can be used as input for a knowledgegraph. 
 It can be called like this:
 
-pipeline_main.run_full_pipeline(
-    adata_filepath='data.h5ad',
-    out_dir='./pipeline_out',
-    cell_state_col='celltype',
-    condition_col='Conditions',
-    sample_id_col='Sample_ID',
-    region='LAA',
-    threshold=0.0125,
-    cell_type_col='celltype',
-    cellstates_excluded='',
-    cell_type_val='Unknown',
-    cell_level='Unknown',
-    comparison_normal_value='control',
-    species='human',
-    year='2026',
-    paper='A_FIB',
-    output_file_name='results.csv',
-    min_cells=3,
-    min_cells_per_state=3
-)
+python pipeline_main.py \
+    dataset.h5ad \
+    --cell-state-col cell_type_combined \
+    --condition-col Conditions \
+    --sample-id-col Sample_ID \
+    --comparison-normal-value SR \
+    --out-dir pipeline_AF_LAA_SR_cAF \
+    --region LAA \
+    --threshold 0.0125 \
+    --cell-type-col celltype \
+    --cellstates-excluded "doublets,Unknown" \
+    --cell-type-val heart \
+    --cell-level celltypelevel \
+    --species human \
+    --year 2026 \
+    --paper AF_LAA_SR_cAF \
+    --output-file-name edgeR_results.csv \
+    --min-cells 3 \
+    --min-cells-per-state 3
 
-Parameters
+
+**Parameters**
 
 adata_filepath – Path to the input .h5ad file (required)
 
