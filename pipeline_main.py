@@ -146,6 +146,7 @@ def run_full_pipeline(
     paper = "Unknown",
     output_file_name = "results.csv",
     min_cells = 3,
+    min_cells_per_state = 3
 ):
     """
     Decision between Wilcoxon (<3 samples per condition) 
@@ -229,7 +230,8 @@ def run_full_pipeline(
             cell_state_translation_path=cell_state_translation_path,
             cell_state_number_path=cell_state_number_path,
             threshold=threshold,
-            output_file_name=output_file_name
+            output_file_name=output_file_name,
+            min_cells_per_state = min_cells_per_state
         )
 
         print("INFO: edgeR finished")
@@ -237,5 +239,52 @@ def run_full_pipeline(
 
 
 if __name__ == "__main__":
-    pass
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run full scRNAseq pipeline")
+
+    # required arguments
+    parser.add_argument("adata_filepath", type=str)
+    parser.add_argument("--cell-state-col", required=True)
+    parser.add_argument("--condition-col", required=True)
+    parser.add_argument("--sample-id-col", required=True)
+    parser.add_argument("--comparison-normal-value", required=True)
+
+    # optional
+    parser.add_argument("--out-dir", default="pipeline_out")
+    parser.add_argument("--region", default="Unknown")
+    parser.add_argument("--threshold", type=float, default=0.0125)
+    parser.add_argument("--cell-type-col", default="celltype")
+    parser.add_argument("--cellstates-excluded", default="")
+    parser.add_argument("--cell-type-val", default="Unknown")
+    parser.add_argument("--cell-level", default="Unknown")
+    parser.add_argument("--species", default="Unknown")
+    parser.add_argument("--year", default="Unknown")
+    parser.add_argument("--paper", default="Unknown")
+    parser.add_argument("--output-file-name", default="results.csv")
+    parser.add_argument("--min-cells", type=int, default=3)
+    parser.add_argument("--min-cells-per-state", type=int, default=3)
+
+    args = parser.parse_args()
+
+    run_full_pipeline(
+        adata_filepath=args.adata_filepath,
+        cell_state_col=args.cell_state_col,
+        condition_col=args.condition_col,
+        sample_id_col=args.sample_id_col,
+        comparison_normal_value=args.comparison_normal_value,
+        out_dir=args.out_dir,
+        region=args.region,
+        threshold=args.threshold,
+        cell_type_col=args.cell_type_col,
+        cellstates_excluded=args.cellstates_excluded,
+        cell_type_val=args.cell_type_val,
+        cell_level=args.cell_level,
+        species=args.species,
+        year=args.year,
+        paper=args.paper,
+        output_file_name=args.output_file_name,
+        min_cells=args.min_cells,
+        min_cells_per_state = args.min_cells_per_state
+    )
 
