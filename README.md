@@ -1,6 +1,17 @@
-This code creates a canonical DE table which can be used as input for a knowledgegraph. 
-It can be called like this:
+# Unified pipeline to ingest cell type specific differential expression into the InTraC knowledge base
 
+The pipeline starts with annotated single cell data in anndata objects.
+Depending on the number of samples present in the file the pipeline performs either pseudo bulk differential gene expression (DEG) analysis using edgeR (for more than 3 samples per condition) or using the Wilcoxon rank rum test (if less than 3 samples per condition are present).
+
+## Installation
+The pipeline depends on the following packages:
+- python
+- scanpy
+- R
+- edgeR
+ 
+## Execution
+```
 python pipeline_main.py \
     dataset.h5ad \
     --cell-state-col cell_type_combined \
@@ -20,42 +31,28 @@ python pipeline_main.py \
     --output-file-name edgeR_results.csv \
     --min-cells 3 \
     --min-cells-per-state 3
-
+```
 
 **Parameters**
+- adata_filepath – Path to the input .h5ad file (required)
+- out_dir – Output directory for results (required)
+- cell_state_col – Column defining cell states  (required)
+- condition_col – Column defining experimental conditions  (required)
+- sample_id_col – Column containing sample IDs  (required)
+- region – Tissue/region identifier (default Unknown)
+- threshold – threshold for highly expressed genes (default 0.0125)
+- cell_type_col – Column defining cell types (if not present in the data, the column will be created)
+- cellstates_excluded – Cell states to exclude (Default: empty list)
+- cell_type_val – (default Unknown)
+- cell_level – (default Unknown)
+- comparison_normal_value – Reference condition (e.g., control)  (required)
+- species – Species name (default Unknown)
+- year – Study year (default Unknown)
+- paper – Study identifier (default Unknown)
+- output_file_name – Name of result file (default results.csv)
+- min_cells – Minimum cells per sample (for Wilcoxon, default 3)
+- min_cells_per_state – Minimum cells per cell state (for edgeR, default 3)
 
-adata_filepath – Path to the input .h5ad file (required)
+## Output
+The output is a csv file in canonical form for ingestion with the InTraC knowledge graph adapter.
 
-out_dir – Output directory for results (required)
-
-cell_state_col – Column defining cell states  (required)
-
-condition_col – Column defining experimental conditions  (required)
-
-sample_id_col – Column containing sample IDs  (required)
-
-region – Tissue/region identifier (default Unknown)
-
-threshold – threshold for highly expressed genes (default 0.0125)
-
-cell_type_col – Column defining cell types (if not present in the data, the column will be created)
-
-cellstates_excluded – Cell states to exclude (Default: empty list)
-
-cell_type_val – (default Unknown)
-
-cell_level – (default Unknown)
-
-comparison_normal_value – Reference condition (e.g., control)  (required)
-
-species – Species name (default Unknown)
-
-year – Study year (default Unknown)
-
-paper – Study identifier (default Unknown)
-
-output_file_name – Name of result file (default results.csv)
-
-min_cells – Minimum cells per sample (for Wilcoxon, default 3)
-
-min_cells_per_state – Minimum cells per cell state (for edgeR, default 3)
